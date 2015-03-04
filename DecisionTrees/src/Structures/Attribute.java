@@ -8,6 +8,7 @@ public class Attribute {
 	public Attribute(String name,HashSet<String> possibleValues){
 		this.possibleValues=possibleValues;
 		this.name=name;
+		
 	}
 	public Attribute(String name,String[] possibleValues){
 		HashSet<String> possibleValuesSet=new HashSet<String>();
