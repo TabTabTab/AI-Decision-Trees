@@ -27,7 +27,9 @@ public class TrainingData {
 		for(int i=0;i<data.length-1;i++){
 			data[i]=data[i].trim();
 			Value value=new Value(attributes.get(i), data[i]);
+			values.add(value);
 		}
+		System.out.println("clasvalue: '"+data[data.length-1].trim()+"'");
 		Classification newClassificaiton=new Classification(data[data.length-1].trim());
 		Example newExample=new Example(values,newClassificaiton);
 		this.examples.add(newExample);
@@ -45,5 +47,15 @@ public class TrainingData {
 			print+="\n";
 		}
 		return print;
+	}
+	public ArrayList<Attribute> getValueAttributes(){
+		ArrayList<Attribute> validAttributes=new ArrayList<Attribute>();
+		for(int i=0;i<attributes.size()-1;i++){
+			validAttributes.add(attributes.get(i));
+		}
+		return validAttributes;
+	}
+	public ArrayList<Example> getExamples(){
+		return examples;
 	}
 }

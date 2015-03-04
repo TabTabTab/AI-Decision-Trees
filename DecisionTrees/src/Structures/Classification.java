@@ -2,8 +2,8 @@ package Structures;
 
 public class Classification {
 	private boolean value;
-	public static final String TRUEVALUE="yes";
-	public static final String FALSEVALUE="no";
+	public static final String TRUEVALUE="Yes";
+	public static final String FALSEVALUE="No";
 	public Classification(String value){
 		this.value=value.equals(TRUEVALUE);
 	}
