@@ -19,10 +19,10 @@ public class WekaParser {
 		
 		Pattern attributePattern=Pattern.compile("@ATTRIBUTE");
 		//get all attributes
+		Pattern pattern = Pattern.compile("@ATTRIBUTE(.*)\\{(.*)\\}");
 		while(scanner.hasNext(attributePattern)){
 			String attributeLine=scanner.nextLine();
 			//System.out.println(attributeLine);
-			Pattern pattern = Pattern.compile("@ATTRIBUTE(.*)\\{(.*)\\}");
 			//System.out.println(pattern);
 			Matcher matcher = pattern.matcher(attributeLine);
 			if(matcher.find()){
@@ -32,7 +32,7 @@ public class WekaParser {
 				trainingData.addNextAttribute(attribute);
 			}
 		}
-		//now look for the data
+		//now look for the examples
 		while(scanner.hasNextLine()){
 			String line=scanner.nextLine();
 			if(line.trim().equals("@DATA")){
@@ -42,9 +42,9 @@ public class WekaParser {
 		int nbrOfAttributes=trainingData.nbrOfAttributes();
 		while(scanner.hasNextLine()){
 			String line=scanner.nextLine();
-			String[] data=line.split(",");
-			if (data.length==nbrOfAttributes){
-				trainingData.addExample(data);
+			String[] exampleData=line.split(",");
+			if (exampleData.length==nbrOfAttributes){
+				trainingData.addExample(exampleData);
 			}
 		}
 		scanner.close();
