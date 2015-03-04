@@ -24,11 +24,15 @@ public class Node {
 		for(int i=0;i<nbrOfTabs;i++){
 			tabs+="\t";
 		}
+		for(int i=0;i<nbrOfTabs;i++){
+			tabs+="|";
+		}
+		tabs+=" ";
 		String stringTree =tabs;
 		stringTree+=name;
-		stringTree+="\n"+tabs;
+		stringTree+=("\n");
 		for(String edge:neighbours.keySet()){
-			stringTree+=edge+" =";
+			stringTree+=tabs+edge+" = ";
 			stringTree+=neighbours.get(edge).toString(nbrOfTabs+1);
 		}
 		stringTree+="\n";
