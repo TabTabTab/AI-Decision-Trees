@@ -83,7 +83,8 @@ public class TreeMaker {
 	private static boolean allHaveSameClassification(ArrayList<Example> examples){
 		Classification compareClassification=examples.get(0).getClassificaiton();
 		for(int i=1;i<examples.size();i++){
-			if (!examples.get(i).equals(compareClassification)){
+			//if (!examples.get(i).equals(compareClassification)){
+			if(!(examples.get(i).getClassificaiton().getClassification()==compareClassification.getClassification())){
 				return false;
 			}
 		}
