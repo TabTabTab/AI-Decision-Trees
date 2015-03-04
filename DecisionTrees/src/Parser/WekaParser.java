@@ -44,10 +44,13 @@ public class WekaParser {
 			String line=scanner.nextLine();
 			String[] data=line.split(",");
 			if (data.length==nbrOfAttributes){
-				trainingData.addData(data);
+				trainingData.addExample(data);
 			}
 		}
 		scanner.close();
 		return trainingData;
 	}
+	
+	
+	
 }

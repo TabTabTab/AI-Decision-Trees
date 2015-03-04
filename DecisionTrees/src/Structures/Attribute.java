@@ -25,4 +25,17 @@ public class Attribute {
 	public String toString(){
 		return name;
 	}
+	public String getName(){
+		return name;
+	}
+	public boolean equals(Object obj){
+		Attribute other=(Attribute)obj;
+		return other.name.equals(this.name) && other.possibleValues.equals(this.possibleValues);
+	}
+	public int nbrOfPossibleValues(){
+		return possibleValues.size();
+	}
+	public HashSet<String> getPossibleValues(){
+		return possibleValues;
+	}
 }
