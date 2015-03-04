@@ -34,8 +34,17 @@ public class TreeMaker {
 				}
 			}
 			//System.out.println(maxAttributeImportance);
-			System.out.println("===================IMPORTANCE: "+ maxAttributeImportance+"=============");
-			System.out.println("===================NAME: "+ mostImportantAttribute.getName()+"=============");
+			//System.out.println("===================NAME: "+ mostImportantAttribute.getName()+"=============");
+			//System.out.println("===================IMPORTANCE: "+ maxAttributeImportance+"=============");
+			//System.out.println("nbr of attributes "+attributes.size());
+			for(Attribute a : attributes){
+				double currentAttributeImportance = importance(a, examples);
+				//System.out.println("current attribute importance: "+currentAttributeImportance);
+				if(currentAttributeImportance==maxAttributeImportance){
+					System.out.println("===================NAME: "+ a.getName()+"=============");
+					System.out.println("===================IMPORTANCE: "+ maxAttributeImportance+"=============");
+				}
+			}
 			Node tree = new Node(mostImportantAttribute.getName());
 			for(String attributeValue : mostImportantAttribute.getPossibleValues()){
 				ArrayList<Example> childExamples=new ArrayList<Example>();
