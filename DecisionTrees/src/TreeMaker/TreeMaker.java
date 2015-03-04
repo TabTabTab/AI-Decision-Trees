@@ -18,7 +18,7 @@ public class TreeMaker {
 		if(examples.isEmpty()){
 			return pluralityValue(parentExamples);
 		}else if (allHaveSameClassification(examples)){
-			return makeClassificationNode(examples.get(0).getClassificaiton());
+			return makeClassificationNode(examples.get(0).getClassificaitonValue());
 		}else if (attributes.isEmpty()){
 			return pluralityValue(examples);
 		}else{
@@ -71,7 +71,7 @@ public class TreeMaker {
 		int positiveCount=0;
 		int negativeCount=0;
 		for(Example e:examples){
-			if(e.getClassificaiton().getClassification()){
+			if(e.getClassificaitonValue()){
 				positiveCount++;
 			}else{
 				negativeCount++;
@@ -92,10 +92,10 @@ public class TreeMaker {
 
 	}
 	private static boolean allHaveSameClassification(ArrayList<Example> examples){
-		Classification compareClassification=examples.get(0).getClassificaiton();
+		boolean firstClassificationValue=examples.get(0).getClassificaitonValue();
 		for(int i=1;i<examples.size();i++){
 			//if (!examples.get(i).equals(compareClassification)){
-			if(!(examples.get(i).getClassificaiton().getClassification()==compareClassification.getClassification())){
+			if(!(examples.get(i).getClassificaitonValue()==firstClassificationValue)){
 				return false;
 			}
 		}
@@ -107,7 +107,7 @@ public class TreeMaker {
 		//System.out.println("antal exempel "+examples.size());
 		int possitiveExamples=0;
 		for(Example example:examples){
-			if(example.getClassificaiton().getClassification()){
+			if(example.getClassificaitonValue()){
 				possitiveExamples++;
 			}
 		}
@@ -125,7 +125,7 @@ public class TreeMaker {
 			for(Example e : examples){
 				if (e.hasValue(v)){
 					hasAttributeValueCount++;
-					if(e.getClassificaiton().getClassification()){
+					if(e.getClassificaitonValue()){
 						positiveExampleCount++;
 					}
 				}
@@ -168,8 +168,8 @@ public class TreeMaker {
 		return -(q*secondLog(q)+(1.0-q)*secondLog(1.0-q));
 
 	}
-	private static Node makeClassificationNode(Classification classification){
-		if(classification.getClassification()){
+	private static Node makeClassificationNode(boolean classificationValue){
+		if(classificationValue){
 			return new Node("Yes");
 		}else {
 			return new Node("No");

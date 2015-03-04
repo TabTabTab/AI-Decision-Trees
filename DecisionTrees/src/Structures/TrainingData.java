@@ -4,11 +4,9 @@ import java.util.ArrayList;
 
 public class TrainingData {
 	private ArrayList<Attribute> attributes;
-	private ArrayList<String[]> datas;
 	private ArrayList<Example> examples;
 	public TrainingData(){
 		attributes=new ArrayList<Attribute>();
-		datas=new ArrayList<String[]>();
 		examples=new ArrayList<Example>();
 	}
 	/**
@@ -29,24 +27,9 @@ public class TrainingData {
 			Value value=new Value(attributes.get(i), data[i]);
 			values.add(value);
 		}
-		System.out.println("clasvalue: '"+data[data.length-1].trim()+"'");
 		Classification newClassificaiton=new Classification(data[data.length-1].trim());
 		Example newExample=new Example(values,newClassificaiton);
 		this.examples.add(newExample);
-		this.datas.add(data);
-	}
-	public String toString(){
-		String print="";
-		print+=attributes.toString();
-		print+="\n";
-		for(int dataIndex=0;dataIndex<datas.size();dataIndex++){
-			String[] currentData=datas.get(dataIndex);
-			for(int i=0;i<currentData.length;i++){
-				print+=currentData[i]+",";
-			}
-			print+="\n";
-		}
-		return print;
 	}
 	public ArrayList<Attribute> getValueAttributes(){
 		ArrayList<Attribute> validAttributes=new ArrayList<Attribute>();

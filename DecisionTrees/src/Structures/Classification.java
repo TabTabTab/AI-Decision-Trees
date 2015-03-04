@@ -14,7 +14,7 @@ public class Classification {
 		return other.value==this.value;
 	}
 	
-	public boolean getClassification(){
+	public boolean getBooleanValue(){
 		return value;
 	}
 }
