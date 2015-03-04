@@ -24,16 +24,18 @@ public class TreeMaker {
 		}else{
 			Attribute mostImportantAttribute = null;
 			double maxAttributeImportance=-1.0;
-			System.out.println("nbr of attributes "+attributes.size());
+			//System.out.println("nbr of attributes "+attributes.size());
 			for(Attribute a : attributes){
 				double currentAttributeImportance = importance(a, examples);
-				System.out.println("current attribute importance: "+currentAttributeImportance);
+				//System.out.println("current attribute importance: "+currentAttributeImportance);
 				if(currentAttributeImportance>maxAttributeImportance){
 					maxAttributeImportance=currentAttributeImportance;
 					mostImportantAttribute = a;
 				}
 			}
-			System.out.println(maxAttributeImportance);
+			//System.out.println(maxAttributeImportance);
+			System.out.println("===================IMPORTANCE: "+ maxAttributeImportance+"=============");
+			System.out.println("===================NAME: "+ mostImportantAttribute.getName()+"=============");
 			Node tree = new Node(mostImportantAttribute.getName());
 			for(String attributeValue : mostImportantAttribute.getPossibleValues()){
 				ArrayList<Example> childExamples=new ArrayList<Example>();
@@ -92,22 +94,22 @@ public class TreeMaker {
 	}
 
 	private static double importance(Attribute attribute,ArrayList<Example> examples){
-		System.out.println("KALL TILL IMPORTANCE");
-		System.out.println("antal exempel "+examples.size());
+		//System.out.println("KALL TILL IMPORTANCE");
+		//System.out.println("antal exempel "+examples.size());
 		int possitiveExamples=0;
 		for(Example example:examples){
 			if(example.getClassificaiton().getClassification()){
 				possitiveExamples++;
 			}
 		}
-		System.out.println("positiva exmpel: "+possitiveExamples);
+		//System.out.println("positiva exmpel: "+possitiveExamples);
 		double q=(possitiveExamples+0.0)/examples.size();
-		System.out.println("q: "+q);
+		//System.out.println("q: "+q);
 		double B=B(q);
-		System.out.println("B: "+B);
+		//System.out.println("B: "+B);
 		double remainder=0.0;
 		for(String attributeValue:attribute.getPossibleValues()){
-			System.out.println("attributevalue: "+attributeValue);
+			//System.out.println("attributevalue: "+attributeValue);
 			int hasAttributeValueCount = 0;
 			int positiveExampleCount=0;
 			Value v = new Value(attribute,attributeValue);
@@ -120,19 +122,19 @@ public class TreeMaker {
 				}
 			}
 			double valuePercentage = ((double)(hasAttributeValueCount)) / examples.size();
-			System.out.println("valuepercentage: "+valuePercentage);
+			/*System.out.println("valuepercentage: "+valuePercentage);
 			System.out.println("posExampleCount: "+positiveExampleCount);
 			System.out.println("pos doubleExampleCount "+(double)positiveExampleCount);
 			System.out.println(((double)positiveExampleCount)/hasAttributeValueCount);
 			System.out.println("Bvalue: "+B(((double)positiveExampleCount)/hasAttributeValueCount));
-			System.out.println("hasAttrPercentage: "+hasAttributeValueCount);
+			System.out.println("hasAttrPercentage: "+hasAttributeValueCount);*/
 			if(valuePercentage!=0.0 && positiveExampleCount!=0){
-				System.out.println("i den koola ifsatsen");
+				//System.out.println("i den koola ifsatsen");
 				remainder += (valuePercentage * B(((double)positiveExampleCount)/hasAttributeValueCount));				
 			}
-			System.out.println("remainder is: "+remainder);
+			//System.out.println("remainder is: "+remainder);
 		}
-		System.out.println("remainder is: "+remainder);
+		//System.out.println("remainder is: "+remainder);
 		return B-remainder;
 	}
 	private static double secondLog(double val){
@@ -149,11 +151,11 @@ public class TreeMaker {
 		//q = 0
 		//q = 1
 		
-		System.out.println("q in B "+q);
+		//System.out.println("q in B "+q);
 		double leftPart=q*secondLog(q);
 		double rightpart=(1.0-q)*secondLog(1.0-q);
-		System.out.println("left: "+leftPart);
-		System.out.println("right: "+rightpart);
+		//System.out.println("left: "+leftPart);
+		//System.out.println("right: "+rightpart);
 		return -(q*secondLog(q)+(1.0-q)*secondLog(1.0-q));
 
 	}

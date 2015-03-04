@@ -9,6 +9,7 @@ public class Classification {
 	}
 	
 	public boolean equals(Object obj){
+		
 		Classification other=(Classification)obj;
 		return other.value==this.value;
 	}

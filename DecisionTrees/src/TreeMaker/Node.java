@@ -17,16 +17,24 @@ public class Node {
 	}
 
 	public String toString(){
-		String stringTree ="";
+		return toString(0);
+	}
+	private String toString(int nbrOfTabs){
+		String tabs="";
+		for(int i=0;i<nbrOfTabs;i++){
+			tabs+="\t";
+		}
+		String stringTree =tabs;
 		stringTree+=name;
-		stringTree+="\n";
+		stringTree+="\n"+tabs;
 		for(String edge:neighbours.keySet()){
-			stringTree+=edge+"\t";
+			stringTree+=edge+" =";
+			stringTree+=neighbours.get(edge).toString(nbrOfTabs+1);
 		}
 		stringTree+="\n";
-		for(String edge:neighbours.keySet()){
-			stringTree+=neighbours.get(edge);
-		}
+//		for(String edge:neighbours.keySet()){
+//			stringTree+=neighbours.get(edge).toString(nbrOfTabs+1);
+//		}
 		return stringTree;
 	}
 }

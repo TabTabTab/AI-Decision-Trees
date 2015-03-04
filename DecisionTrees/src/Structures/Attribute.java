@@ -29,6 +29,7 @@ public class Attribute {
 		return name;
 	}
 	public boolean equals(Object obj){
+		
 		Attribute other=(Attribute)obj;
 		return other.name.equals(this.name) && other.possibleValues.equals(this.possibleValues);
 	}
