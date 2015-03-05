@@ -1,10 +1,8 @@
 package TreeMaker;
 
 import java.util.ArrayList;
-import java.util.Collections;
 
 import Structures.Attribute;
-import Structures.Classification;
 import Structures.Example;
 import Structures.TrainingData;
 import Structures.Value;
@@ -14,16 +12,15 @@ public class TreeMaker {
 	public TreeMaker(Attribute classifier){
 		this.classifier=classifier;
 	}
-	public Node makeTree(TrainingData trainingData){
+	public DecisionTree makeTree(TrainingData trainingData){
 		ArrayList<Attribute> attributes=trainingData.getAllAttributes();
 		ArrayList<Example> examples=trainingData.getExamples();
 		for(Example e:examples){
 			e.setClassifier(classifier);
 		}
 		attributes.remove(classifier);
-		Node tree=DTL(examples,attributes,new ArrayList<Example>());
-		tree.setRelationshipName(trainingData.getRelationshipName());
-		return tree;
+		Node head=DTL(examples,attributes,new ArrayList<Example>());
+		return new DecisionTree(trainingData.getRelationshipName(), head);
 	}
 	private Node DTL(ArrayList<Example> examples,ArrayList<Attribute> attributes,ArrayList<Example> parentExamples){
 

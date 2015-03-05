@@ -1,4 +1,4 @@
-package Main;
+package Tester;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -11,6 +11,7 @@ import javax.swing.filechooser.FileNameExtensionFilter;
 import Parser.WekaParser;
 import Structures.Attribute;
 import Structures.TrainingData;
+import TreeMaker.DecisionTree;
 import TreeMaker.Node;
 import TreeMaker.TreeMaker;
 
@@ -25,7 +26,7 @@ public class Tester {
 			//Attribute classifier=trainingData.getAllAttributes().get(trainingData.getAllAttributes().size()-1);
 			Attribute classifier=getUserChosenClassifier(trainingData.getAllAttributes());
 			TreeMaker maker=new TreeMaker(classifier);
-			Node tree=maker.makeTree(trainingData);
+			DecisionTree tree=maker.makeTree(trainingData);
 			System.out.println(tree);
 		} catch (FileNotFoundException e) {
 			// TODO Auto-generated catch block
