@@ -14,12 +14,32 @@ public class WekaParser {
 		
 	}
 	public TrainingData parseFile(File file) throws FileNotFoundException{
-		TrainingData trainingData=new TrainingData();
 		Scanner scanner=new Scanner(file);
 		
-		Pattern attributePattern=Pattern.compile("@ATTRIBUTE");
+		Pattern relationPattern=Pattern.compile("@RELATION (.*)",Pattern.CASE_INSENSITIVE);
+		//get the relationsnip text and throw it away
+		String relationName="undefined";
+		while(scanner.hasNextLine()){
+			String line=scanner.nextLine();
+			Matcher matcher=relationPattern.matcher(line);
+			if(matcher.find()){
+				relationName=matcher.group(1).trim();
+				break;
+			}
+		}
+		
+		TrainingData trainingData=new TrainingData(relationName);
+		
+		
+		Pattern attributePattern=Pattern.compile("@ATTRIBUTE.*",Pattern.CASE_INSENSITIVE);
+		//now get to the attributes
+		while(!scanner.hasNext(attributePattern)){
+			scanner.nextLine();
+		}
+		
+		
 		//get all attributes
-		Pattern pattern = Pattern.compile("@ATTRIBUTE(.*)\\{(.*)\\}");
+		Pattern pattern = Pattern.compile("@ATTRIBUTE(.*)\\{(.*)\\}",Pattern.CASE_INSENSITIVE);
 		while(scanner.hasNext(attributePattern)){
 			String attributeLine=scanner.nextLine();
 			//System.out.println(attributeLine);
@@ -35,7 +55,7 @@ public class WekaParser {
 		//now look for the examples
 		while(scanner.hasNextLine()){
 			String line=scanner.nextLine();
-			if(line.trim().equals("@DATA")){
+			if(line.trim().equals("@DATA") || line.trim().equals("@data")){
 				break;
 			}
 		}

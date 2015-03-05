@@ -4,7 +4,9 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
 
+import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
+import javax.swing.filechooser.FileNameExtensionFilter;
 
 import Parser.WekaParser;
 import Structures.Attribute;
@@ -16,6 +18,7 @@ public class Tester {
 	public static void main(String[] args){
 		WekaParser wParser=new WekaParser();
 		File file=new File("TrainingSet.ARFF");
+		file=getFile();
 		try {
 			TrainingData trainingData=wParser.parseFile(file);
 			
@@ -29,7 +32,7 @@ public class Tester {
 			e.printStackTrace();
 		}
 	}
-	public static Attribute getUserChosenClassifier(ArrayList<Attribute> attributes) {
+	private static Attribute getUserChosenClassifier(ArrayList<Attribute> attributes) {
 	    String[] choices = new String[attributes.size()];//{ "A", "B", "C", "D", "E", "F" };
 	    ArrayList<String> indexLookup=new ArrayList<>();
 	    for(int i=0;i<choices.length;i++){
@@ -44,10 +47,37 @@ public class Tester {
 	        choices[0]); // Initial choice
 	    
 	    if(attributeName==null){
+	    	displayExitOption();
 	    	return getUserChosenClassifier(attributes);
 	    }
 	    int index=indexLookup.indexOf(attributeName);
 	    Attribute chosenAttribute=attributes.get(index);
 	    return chosenAttribute;
+	}
+	private static File getFile(){
+		File file=new File("TrainingSet.ARFF");
+		int answer=JOptionPane.showConfirmDialog(null, "Want to use a custom file?(no results in TrainingSet.ARFF being used)");
+		if(answer==1){
+			return file;
+		}else if(answer!=0){
+			displayExitOption();
+			return getFile();
+		}
+		JFileChooser chooser = new JFileChooser();
+	    FileNameExtensionFilter filter = new FileNameExtensionFilter(
+	        "arff files", "arff", "ARFF");
+	    chooser.setFileFilter(filter);
+	    int returnVal = chooser.showOpenDialog(null);
+	    if(returnVal != JFileChooser.APPROVE_OPTION) {
+	    	displayExitOption();
+	    	return getFile();
+	    }
+	    return chooser.getSelectedFile();
+	}
+	private static void displayExitOption(){
+		int answer=JOptionPane.showConfirmDialog(null, "Want to use a exit?");
+		if(answer==0){
+			System.exit(0);
+		}
 	}
 }

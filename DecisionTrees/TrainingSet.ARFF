@@ -1,3 +1,5 @@
+@relation restaurant
+
 @ATTRIBUTE Alternative 		{Yes,No}
 @ATTRIBUTE Bar 				{Yes,No}
 @ATTRIBUTE Fri/Sat	 		{Yes,No}

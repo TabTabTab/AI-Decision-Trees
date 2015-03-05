@@ -5,7 +5,9 @@ import java.util.ArrayList;
 public class TrainingData {
 	private ArrayList<Attribute> attributes;
 	private ArrayList<Example> examples;
-	public TrainingData(){
+	private String relationshipName;
+	public TrainingData(String name){
+		this.relationshipName=name;
 		attributes=new ArrayList<Attribute>();
 		examples=new ArrayList<Example>();
 	}
@@ -36,5 +38,8 @@ public class TrainingData {
 	}
 	public ArrayList<Example> getExamples(){
 		return examples;
+	}
+	public String getRelationshipName(){
+		return relationshipName;
 	}
 }

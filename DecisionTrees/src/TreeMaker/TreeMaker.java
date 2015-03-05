@@ -3,7 +3,6 @@ package TreeMaker;
 import java.util.ArrayList;
 import java.util.Collections;
 
-import sun.misc.PostVMInitHook;
 import Structures.Attribute;
 import Structures.Classification;
 import Structures.Example;
@@ -22,7 +21,9 @@ public class TreeMaker {
 			e.setClassifier(classifier);
 		}
 		attributes.remove(classifier);
-		return DTL(examples,attributes,new ArrayList<Example>());
+		Node tree=DTL(examples,attributes,new ArrayList<Example>());
+		tree.setRelationshipName(trainingData.getRelationshipName());
+		return tree;
 	}
 	private Node DTL(ArrayList<Example> examples,ArrayList<Attribute> attributes,ArrayList<Example> parentExamples){
 
