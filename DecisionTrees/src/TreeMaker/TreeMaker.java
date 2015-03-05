@@ -1,7 +1,9 @@
 package TreeMaker;
 
 import java.util.ArrayList;
+import java.util.Collections;
 
+import sun.misc.PostVMInitHook;
 import Structures.Attribute;
 import Structures.Classification;
 import Structures.Example;
@@ -9,21 +11,30 @@ import Structures.TrainingData;
 import Structures.Value;
 
 public class TreeMaker {
-	public static Node makeTree(TrainingData trainingData){
-		
-		return DTL(trainingData.getExamples(),trainingData.getValueAttributes(),new ArrayList<Example>());
+	private Attribute classifier;
+	public TreeMaker(Attribute classifier){
+		this.classifier=classifier;
 	}
-	private static Node DTL(ArrayList<Example> examples,ArrayList<Attribute> attributes,ArrayList<Example> parentExamples){
+	public Node makeTree(TrainingData trainingData){
+		ArrayList<Attribute> attributes=trainingData.getAllAttributes();
+		ArrayList<Example> examples=trainingData.getExamples();
+		for(Example e:examples){
+			e.setClassifier(classifier);
+		}
+		attributes.remove(classifier);
+		return DTL(examples,attributes,new ArrayList<Example>());
+	}
+	private Node DTL(ArrayList<Example> examples,ArrayList<Attribute> attributes,ArrayList<Example> parentExamples){
 
 		if(examples.isEmpty()){
 			return pluralityValue(parentExamples);
 		}else if (allHaveSameClassification(examples)){
-			return makeClassificationNode(examples.get(0).getClassificaitonValue());
+			return makeClassificationNode(examples.get(0).getClassificationValue());
 		}else if (attributes.isEmpty()){
 			return pluralityValue(examples);
 		}else{
 			Attribute mostImportantAttribute = null;
-			double maxAttributeImportance=-1.0;
+			double maxAttributeImportance=Double.NEGATIVE_INFINITY;
 			//System.out.println("nbr of attributes "+attributes.size());
 			for(Attribute a : attributes){
 				double currentAttributeImportance = importance(a, examples);
@@ -46,17 +57,16 @@ public class TreeMaker {
 				}
 			}
 			Node tree = new Node(mostImportantAttribute.getName());
-			for(String attributeValue : mostImportantAttribute.getPossibleValues()){
+			for(Value attributeValue : mostImportantAttribute.getPossibleValues()){
 				ArrayList<Example> childExamples=new ArrayList<Example>();
-				Value v = new Value(mostImportantAttribute,attributeValue);
 				for(Example e : examples){
-					if (e.hasValue(v)){
+					if (e.hasValue(attributeValue)){
 						childExamples.add(e);
 					}
 				}
 				attributes.remove(mostImportantAttribute);
 				Node subtree = DTL(childExamples,attributes,examples);
-				tree.addNeighbour(attributeValue, subtree);
+				tree.addNeighbour(attributeValue.getAttributeValue(), subtree);
 				
 				
 			}
@@ -67,67 +77,86 @@ public class TreeMaker {
 	}
 
 
-	private static Node pluralityValue(ArrayList<Example> examples){
-		int positiveCount=0;
-		int negativeCount=0;
+	private Node pluralityValue(ArrayList<Example> examples){
+		ArrayList<Value> possibleClassifications=classifier.getPossibleValues();
+		ArrayList<Integer> classificationCount=new ArrayList<Integer>();
+		for(int i=0;i<possibleClassifications.size();i++){
+			classificationCount.add(0);
+		}
 		for(Example e:examples){
-			if(e.getClassificaitonValue()){
-				positiveCount++;
-			}else{
-				negativeCount++;
+			int index=possibleClassifications.indexOf(e.getClassificationValue());
+			int oldCount=classificationCount.get(index);
+			classificationCount.set(index,oldCount+1);
+		}
+		
+		int maxCount=Integer.MIN_VALUE;
+		for(int i=0;i<classificationCount.size();i++){
+			if(classificationCount.get(i)>maxCount){
+				maxCount=classificationCount.get(i);
 			}
 		}
-		if(positiveCount>negativeCount){
-			return new Node("Yes");
-		}else if(positiveCount<negativeCount){
-			return new Node("No");
-		}else{
-			double rand=Math.random();
-			if(rand<0.5){
-				return new Node("Yes");
-			}else {
-				return new Node("No");
+		//check if there are multiple max indices, if so, choose one at random		
+		ArrayList<Integer> maxIndices=new ArrayList<Integer>();
+		for(int i=0;i<classificationCount.size();i++){
+			if(classificationCount.get(i)==maxCount){
+				maxIndices.add(i);
 			}
 		}
+		int indice=(int)(Math.random()*maxIndices.size());
+		
+		return makeClassificationNode(possibleClassifications.get(indice));
 
 	}
-	private static boolean allHaveSameClassification(ArrayList<Example> examples){
-		boolean firstClassificationValue=examples.get(0).getClassificaitonValue();
+	private boolean allHaveSameClassification(ArrayList<Example> examples){
+		Value firstClassificationValue=examples.get(0).getClassificationValue();
 		for(int i=1;i<examples.size();i++){
 			//if (!examples.get(i).equals(compareClassification)){
-			if(!(examples.get(i).getClassificaitonValue()==firstClassificationValue)){
+			if(!(examples.get(i).getClassificationValue().equals(firstClassificationValue))){
 				return false;
 			}
 		}
 		return true;
 	}
 
-	private static double importance(Attribute attribute,ArrayList<Example> examples){
+	private double importance(Attribute attribute,ArrayList<Example> examples){
 		//System.out.println("KALL TILL IMPORTANCE");
 		//System.out.println("antal exempel "+examples.size());
-		int possitiveExamples=0;
-		for(Example example:examples){
-			if(example.getClassificaitonValue()){
-				possitiveExamples++;
-			}
+//		int possitiveExamples=0;
+//		for(Example example:examples){
+//			if(example.getClassificaitonValue()){
+//				possitiveExamples++;
+//			}
+//		}
+		ArrayList<Value> possibleClassifications=classifier.getPossibleValues();
+		ArrayList<Integer> classificationCount=new ArrayList<Integer>();
+		for(int i=0;i<possibleClassifications.size();i++){
+			classificationCount.add(0);
 		}
-		//System.out.println("positiva exmpel: "+possitiveExamples);
-		double q=(possitiveExamples+0.0)/examples.size();
+		for(Example e:examples){
+			int index=possibleClassifications.indexOf(e.getClassificationValue());
+			int oldCount=classificationCount.get(index);
+			classificationCount.set(index,oldCount+1);
+		}
+			
 		//System.out.println("q: "+q);
-		double B=B(q);
+		double B=B(classificationCount);
 		//System.out.println("B: "+B);
 		double remainder=0.0;
-		for(String attributeValue:attribute.getPossibleValues()){
+		ArrayList<Value> possibleValues=attribute.getPossibleValues();
+		for(int vIndex=0;vIndex<possibleValues.size();vIndex++){
+			Value attributeValue=possibleValues.get(vIndex);
 			//System.out.println("attributevalue: "+attributeValue);
-			int hasAttributeValueCount = 0;
-			int positiveExampleCount=0;
-			Value v = new Value(attribute,attributeValue);
+			classificationCount=new ArrayList<Integer>();
+			for(int i=0;i<possibleClassifications.size();i++){
+				classificationCount.add(0);
+			}
+			int hasAttributeValueCount=0;
 			for(Example e : examples){
-				if (e.hasValue(v)){
+				if (e.hasValue(attributeValue)){
 					hasAttributeValueCount++;
-					if(e.getClassificaitonValue()){
-						positiveExampleCount++;
-					}
+					int index=possibleClassifications.indexOf(e.getClassificationValue());
+					int oldCount=classificationCount.get(index);
+					classificationCount.set(index,oldCount+1);
 				}
 			}
 			double valuePercentage = ((double)(hasAttributeValueCount)) / examples.size();
@@ -137,42 +166,33 @@ public class TreeMaker {
 			System.out.println(((double)positiveExampleCount)/hasAttributeValueCount);
 			System.out.println("Bvalue: "+B(((double)positiveExampleCount)/hasAttributeValueCount));
 			System.out.println("hasAttrPercentage: "+hasAttributeValueCount);*/
-			if(valuePercentage!=0.0 && positiveExampleCount!=0){
-				//System.out.println("i den koola ifsatsen");
-				remainder += (valuePercentage * B(((double)positiveExampleCount)/hasAttributeValueCount));				
-			}
+
+			remainder += (valuePercentage * B(classificationCount));				
 			//System.out.println("remainder is: "+remainder);
 		}
 		//System.out.println("remainder is: "+remainder);
 		return B-remainder;
 	}
-	private static double secondLog(double val){
+	private double secondLog(double val){
 		return Math.log(val)/Math.log(2);
 	}
 
-	private static double B(double q){
-		if(q==0.0){
-			return 0;
+	private double B(ArrayList<Integer> classificationValueCount){
+		int n=0;
+		for(Integer count:classificationValueCount){
+			n+=count;
 		}
-		if(q==1.0){
-			return 0;
+		double sum=0.0;
+		for(Integer count:classificationValueCount){
+			if(count>0){
+				double probability=(count+0.0)/n;
+				sum+=probability*secondLog(probability);
+			}
 		}
-		//q = 0
-		//q = 1
-		
-		//System.out.println("q in B "+q);
-		double leftPart=q*secondLog(q);
-		double rightpart=(1.0-q)*secondLog(1.0-q);
-		//System.out.println("left: "+leftPart);
-		//System.out.println("right: "+rightpart);
-		return -(q*secondLog(q)+(1.0-q)*secondLog(1.0-q));
+		return -sum;
 
 	}
-	private static Node makeClassificationNode(boolean classificationValue){
-		if(classificationValue){
-			return new Node("Yes");
-		}else {
-			return new Node("No");
-		}
+	private Node makeClassificationNode(Value classificationValue){
+		return new Node(classificationValue.getAttributeValue());
 	}
 }

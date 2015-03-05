@@ -19,7 +19,9 @@ public class Value {
 	public String getAttributeValue(){
 		return attributeValue;
 	}
-	
+	public String getAttributeName(){
+		return attribute.getName();
+	}
 	public int hashCode(){
 		return attribute.hashCode()+attributeValue.hashCode();
 	}

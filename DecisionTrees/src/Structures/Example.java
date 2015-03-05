@@ -4,20 +4,28 @@ import java.util.ArrayList;
 
 public class Example {
 	private ArrayList<Value> values;
-	private Classification classification;
-	public Example(ArrayList<Value> values,Classification classification){
+	private Value classifierValue;
+	public Example(ArrayList<Value> values){
 		this.values=values;
-		this.classification=classification;
+		this.classifierValue=null;
 	}
-	public boolean getClassificaitonValue(){
-		return classification.getBooleanValue();
-	}
-	
 	public ArrayList<Value> getValues(){
 		return values;
 	}
 	public boolean hasValue(Value v){
 		boolean hasValue=values.indexOf(v)!=-1;
 		return hasValue;
+	}
+	public void setClassifier(Attribute classifier){
+		for(Value v:values){
+			if(v.getAttribute().equals(classifier)){
+				classifierValue=v;
+				break;
+			}
+		}
+		values.remove(classifierValue);
+	}
+	public Value getClassificationValue(){
+		return classifierValue;
 	}
 }

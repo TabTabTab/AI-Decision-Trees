@@ -1,17 +1,13 @@
 package Structures;
 
+import java.util.ArrayList;
 import java.util.HashSet;
 
 public class Attribute {
 	private String name;
-	private HashSet<String> possibleValues;
-	public Attribute(String name,HashSet<String> possibleValues){
-		this.possibleValues=possibleValues;
-		this.name=name;
-		
-	}
+	private ArrayList<String> possibleValues;
 	public Attribute(String name,String[] possibleValues){
-		HashSet<String> possibleValuesSet=new HashSet<String>();
+		ArrayList<String> possibleValuesSet=new ArrayList<String>();
 		for(String value:possibleValues){
 			value=value.trim();
 			possibleValuesSet.add(value);
@@ -37,7 +33,15 @@ public class Attribute {
 	public int nbrOfPossibleValues(){
 		return possibleValues.size();
 	}
-	public HashSet<String> getPossibleValues(){
+	public ArrayList<String> getPossibleStringValues(){
 		return possibleValues;
+	}
+	public ArrayList<Value> getPossibleValues(){
+		ArrayList<Value> values=new ArrayList<Value>();
+		for(String value:possibleValues){
+			Value v=new Value(this,value);
+			values.add(v);
+		}
+		return values;
 	}
 }

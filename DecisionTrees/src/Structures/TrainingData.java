@@ -22,21 +22,17 @@ public class TrainingData {
 	public void addExample(String[] data){
 		//we always assume the last value is the classification
 		ArrayList<Value> values=new ArrayList<Value>();
-		for(int i=0;i<data.length-1;i++){
+		for(int i=0;i<data.length;i++){
 			data[i]=data[i].trim();
 			Value value=new Value(attributes.get(i), data[i]);
 			values.add(value);
 		}
-		Classification newClassificaiton=new Classification(data[data.length-1].trim());
-		Example newExample=new Example(values,newClassificaiton);
+		Example newExample=new Example(values);
 		this.examples.add(newExample);
 	}
-	public ArrayList<Attribute> getValueAttributes(){
-		ArrayList<Attribute> validAttributes=new ArrayList<Attribute>();
-		for(int i=0;i<attributes.size()-1;i++){
-			validAttributes.add(attributes.get(i));
-		}
-		return validAttributes;
+	public ArrayList<Attribute> getAllAttributes(){
+		ArrayList<Attribute> clone = (ArrayList<Attribute>)attributes.clone();
+		return clone;
 	}
 	public ArrayList<Example> getExamples(){
 		return examples;
