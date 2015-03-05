@@ -194,6 +194,6 @@ public class TreeMaker {
 
 	}
 	private Node makeClassificationNode(Value classificationValue){
-		return new Node(classificationValue.getAttributeValue());
+		return new EndNode(classificationValue.getAttributeValue());
 	}
 }

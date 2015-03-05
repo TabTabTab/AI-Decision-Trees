@@ -6,7 +6,7 @@ import java.util.HashMap;
 
 public class Node {
 
-	private String name;
+	protected String name;
 	private HashMap<String,Node> neighbours;
 	private String relationshipName;
 	public Node(String name){
@@ -28,20 +28,18 @@ public class Node {
 		}
 		return treeString+toString(0);
 	}
-	private String toString(int nbrOfTabs){
+	protected String toString(int nbrOfTabs){
 		String tabs="";
 		for(int i=0;i<nbrOfTabs;i++){
-			tabs+="\t";
+			tabs+=" ";
 		}
-		for(int i=0;i<nbrOfTabs;i++){
-			tabs+="|";
-		}
-		tabs+=" ";
-		String stringTree =tabs;
-		stringTree+=name;
-		stringTree+=("\n");
+//		for(int i=0;i<nbrOfTabs;i++){
+//			tabs+="|";
+//		}
+		//tabs+=" ";
+		String stringTree ="\n";
 		for(String edge:neighbours.keySet()){
-			stringTree+=tabs+edge+" = ";
+			stringTree+=tabs+name +" = "+edge+" : ";
 			stringTree+=neighbours.get(edge).toString(nbrOfTabs+1);
 		}
 		stringTree+="\n";
@@ -49,5 +47,8 @@ public class Node {
 //			stringTree+=neighbours.get(edge).toString(nbrOfTabs+1);
 //		}
 		return stringTree;
+	}
+	protected boolean isEndNode(){
+		return false;
 	}
 }
