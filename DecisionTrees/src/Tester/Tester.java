@@ -2,6 +2,9 @@ package Tester;
 
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.OutputStream;
 import java.util.ArrayList;
 
 import javax.swing.JFileChooser;
@@ -12,7 +15,6 @@ import Parser.WekaParser;
 import Structures.Attribute;
 import Structures.TrainingData;
 import TreeMaker.DecisionTree;
-import TreeMaker.Node;
 import TreeMaker.TreeMaker;
 
 public class Tester {
@@ -28,7 +30,11 @@ public class Tester {
 			TreeMaker maker=new TreeMaker(classifier);
 			DecisionTree tree=maker.makeTree(trainingData);
 			System.out.println(tree);
+			checkPrintToFileRequest(tree);
 		} catch (FileNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
@@ -64,21 +70,67 @@ public class Tester {
 			displayExitOption();
 			return getFile();
 		}
+		
+//		JFileChooser chooser = new JFileChooser();
+//	    FileNameExtensionFilter filter = new FileNameExtensionFilter(
+//	        "arff files", "arff", "ARFF");
+//	    chooser.setFileFilter(filter);
+//	    int returnVal = chooser.showOpenDialog(null);
+//	    if(returnVal != JFileChooser.APPROVE_OPTION) {
+//	    	displayExitOption();
+//	    	return getFile();
+//	    }
+	    return getFile("Select a training file","arff files","arff", "ARFF");
+	}
+	private static File getFile(String dialogTitle,String filetypeNames, String... extentions){
 		JFileChooser chooser = new JFileChooser();
 	    FileNameExtensionFilter filter = new FileNameExtensionFilter(
-	        "arff files", "arff", "ARFF");
+	    		filetypeNames, extentions);
 	    chooser.setFileFilter(filter);
+	    chooser.setDialogTitle(dialogTitle);
 	    int returnVal = chooser.showOpenDialog(null);
 	    if(returnVal != JFileChooser.APPROVE_OPTION) {
 	    	displayExitOption();
-	    	return getFile();
+	    	return getFile(dialogTitle,filetypeNames,extentions);
 	    }
 	    return chooser.getSelectedFile();
 	}
+	private static File getOutputFile() throws IOException{
+		File outputFile= getFile("Select or create an output file","txt files","txt");
+		if(!outputFile.exists()){
+			outputFile.createNewFile();
+		}
+		return outputFile;
+	} 
 	private static void displayExitOption(){
 		int answer=JOptionPane.showConfirmDialog(null, "Do you want to exit?");
 		if(answer==0){
 			System.exit(0);
 		}
+	}
+	private static void checkPrintToFileRequest(DecisionTree tree) throws IOException{
+		int answer=JOptionPane.showConfirmDialog(null, "Do you want to print the tree to a file?");
+		if(answer==0){
+			File file=getOutputFile();
+			try {
+				OutputStream fos=getFileStream(file);
+				printToStream(fos, tree.toString());
+				fos.close();
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}else{
+			System.exit(0);
+		}
+	}
+	private static OutputStream getFileStream(File file) throws IOException{
+		
+		FileOutputStream fos=new FileOutputStream(file);
+		return fos;
+		
+	}
+	private static void printToStream(OutputStream os,String info) throws IOException{
+		os.write(info.getBytes());
 	}
 }
