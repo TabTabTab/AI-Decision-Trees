@@ -76,7 +76,7 @@ public class Tester {
 	    return chooser.getSelectedFile();
 	}
 	private static void displayExitOption(){
-		int answer=JOptionPane.showConfirmDialog(null, "Want to use a exit?");
+		int answer=JOptionPane.showConfirmDialog(null, "Do you want to exit?");
 		if(answer==0){
 			System.exit(0);
 		}

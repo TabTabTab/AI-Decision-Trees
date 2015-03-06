@@ -20,7 +20,7 @@ public class TreeMaker {
 		}
 		attributes.remove(classifier);
 		Node head=DTL(examples,attributes,new ArrayList<Example>());
-		return new DecisionTree(trainingData.getRelationshipName(), head);
+		return new DecisionTree(trainingData.getRelationshipName(), head,classifier);
 	}
 	private Node DTL(ArrayList<Example> examples,ArrayList<Attribute> attributes,ArrayList<Example> parentExamples){
 
