@@ -1,8 +1,8 @@
 package TreeMaker;
 
-public class EndNode extends Node {
+public class ClassificationNode extends Node {
 	
-	public EndNode(String name){
+	public ClassificationNode(String name){
 		super(name);
 	}
 	protected String toString(int nbrOfTabs){

@@ -33,25 +33,11 @@ public class TreeMaker {
 		}else{
 			Attribute mostImportantAttribute = null;
 			double maxAttributeImportance=Double.NEGATIVE_INFINITY;
-			//System.out.println("nbr of attributes "+attributes.size());
 			for(Attribute a : attributes){
 				double currentAttributeImportance = importance(a, examples);
-				//System.out.println("current attribute importance: "+currentAttributeImportance);
 				if(currentAttributeImportance>maxAttributeImportance){
 					maxAttributeImportance=currentAttributeImportance;
 					mostImportantAttribute = a;
-				}
-			}
-			//System.out.println(maxAttributeImportance);
-			//System.out.println("===================NAME: "+ mostImportantAttribute.getName()+"=============");
-			//System.out.println("===================IMPORTANCE: "+ maxAttributeImportance+"=============");
-			//System.out.println("nbr of attributes "+attributes.size());
-			for(Attribute a : attributes){
-				double currentAttributeImportance = importance(a, examples);
-				//System.out.println("current attribute importance: "+currentAttributeImportance);
-				if(currentAttributeImportance==maxAttributeImportance){
-					System.out.println("===================NAME: "+ a.getName()+"=============");
-					System.out.println("===================IMPORTANCE: "+ maxAttributeImportance+"=============");
 				}
 			}
 			Node tree = new Node(mostImportantAttribute.getName());
@@ -100,15 +86,14 @@ public class TreeMaker {
 				maxIndices.add(i);
 			}
 		}
-		int indice=(int)(Math.random()*maxIndices.size());
+		int index=(int)(Math.random()*maxIndices.size());
 		
-		return makeClassificationNode(possibleClassifications.get(indice));
+		return makeClassificationNode(possibleClassifications.get(index));
 
 	}
 	private boolean allHaveSameClassification(ArrayList<Example> examples){
 		Value firstClassificationValue=examples.get(0).getClassificationValue();
 		for(int i=1;i<examples.size();i++){
-			//if (!examples.get(i).equals(compareClassification)){
 			if(!(examples.get(i).getClassificationValue().equals(firstClassificationValue))){
 				return false;
 			}
@@ -117,14 +102,6 @@ public class TreeMaker {
 	}
 
 	private double importance(Attribute attribute,ArrayList<Example> examples){
-		//System.out.println("KALL TILL IMPORTANCE");
-		//System.out.println("antal exempel "+examples.size());
-//		int possitiveExamples=0;
-//		for(Example example:examples){
-//			if(example.getClassificaitonValue()){
-//				possitiveExamples++;
-//			}
-//		}
 		ArrayList<Value> possibleClassifications=classifier.getPossibleValues();
 		ArrayList<Integer> classificationCount=new ArrayList<Integer>();
 		for(int i=0;i<possibleClassifications.size();i++){
@@ -136,14 +113,11 @@ public class TreeMaker {
 			classificationCount.set(index,oldCount+1);
 		}
 			
-		//System.out.println("q: "+q);
 		double B=B(classificationCount);
-		//System.out.println("B: "+B);
 		double remainder=0.0;
 		ArrayList<Value> possibleValues=attribute.getPossibleValues();
 		for(int vIndex=0;vIndex<possibleValues.size();vIndex++){
 			Value attributeValue=possibleValues.get(vIndex);
-			//System.out.println("attributevalue: "+attributeValue);
 			classificationCount=new ArrayList<Integer>();
 			for(int i=0;i<possibleClassifications.size();i++){
 				classificationCount.add(0);
@@ -158,17 +132,9 @@ public class TreeMaker {
 				}
 			}
 			double valuePercentage = ((double)(hasAttributeValueCount)) / examples.size();
-			/*System.out.println("valuepercentage: "+valuePercentage);
-			System.out.println("posExampleCount: "+positiveExampleCount);
-			System.out.println("pos doubleExampleCount "+(double)positiveExampleCount);
-			System.out.println(((double)positiveExampleCount)/hasAttributeValueCount);
-			System.out.println("Bvalue: "+B(((double)positiveExampleCount)/hasAttributeValueCount));
-			System.out.println("hasAttrPercentage: "+hasAttributeValueCount);*/
 
 			remainder += (valuePercentage * B(classificationCount));				
-			//System.out.println("remainder is: "+remainder);
 		}
-		//System.out.println("remainder is: "+remainder);
 		return B-remainder;
 	}
 	private double secondLog(double val){
@@ -191,6 +157,6 @@ public class TreeMaker {
 
 	}
 	private Node makeClassificationNode(Value classificationValue){
-		return new EndNode(classificationValue.getAttributeValue());
+		return new ClassificationNode(classificationValue.getAttributeValue());
 	}
 }
