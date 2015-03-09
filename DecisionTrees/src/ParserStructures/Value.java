@@ -1,4 +1,4 @@
-package Structures;
+package ParserStructures;
 
 public class Value {
 	private Attribute attribute;

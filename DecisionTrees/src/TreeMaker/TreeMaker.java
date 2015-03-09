@@ -2,10 +2,10 @@ package TreeMaker;
 
 import java.util.ArrayList;
 
-import Structures.Attribute;
-import Structures.Example;
-import Structures.TrainingData;
-import Structures.Value;
+import ParserStructures.Attribute;
+import ParserStructures.Example;
+import ParserStructures.TrainingData;
+import ParserStructures.Value;
 
 public class TreeMaker {
 	private Attribute classifier;

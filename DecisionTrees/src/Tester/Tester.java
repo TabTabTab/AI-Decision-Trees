@@ -12,8 +12,8 @@ import javax.swing.JOptionPane;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
 import Parser.WekaParser;
-import Structures.Attribute;
-import Structures.TrainingData;
+import ParserStructures.Attribute;
+import ParserStructures.TrainingData;
 import TreeMaker.DecisionTree;
 import TreeMaker.TreeMaker;
 

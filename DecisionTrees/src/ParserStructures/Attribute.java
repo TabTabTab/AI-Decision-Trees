@@ -1,7 +1,6 @@
-package Structures;
+package ParserStructures;
 
 import java.util.ArrayList;
-import java.util.HashSet;
 
 public class Attribute {
 	private String name;

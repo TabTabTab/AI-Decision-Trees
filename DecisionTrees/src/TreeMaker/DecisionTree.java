@@ -1,6 +1,6 @@
 package TreeMaker;
 
-import Structures.Attribute;
+import ParserStructures.Attribute;
 
 public class DecisionTree {
 	private String relationshipName;

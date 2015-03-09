@@ -6,8 +6,8 @@ import java.util.Scanner;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import Structures.Attribute;
-import Structures.TrainingData;
+import ParserStructures.Attribute;
+import ParserStructures.TrainingData;
 
 public class WekaParser {
 	public WekaParser(){
