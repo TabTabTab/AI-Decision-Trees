@@ -24,18 +24,14 @@ public class Tester {
 		file=getFile();
 		try {
 			TrainingData trainingData=wParser.parseFile(file);
-			
-			//Attribute classifier=trainingData.getAllAttributes().get(trainingData.getAllAttributes().size()-1);
 			Attribute classifier=getUserChosenClassifier(trainingData.getAllAttributes());
 			TreeMaker maker=new TreeMaker(classifier);
 			DecisionTree tree=maker.makeTree(trainingData);
 			System.out.println(tree);
 			checkPrintToFileRequest(tree);
 		} catch (FileNotFoundException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}
@@ -71,15 +67,6 @@ public class Tester {
 			return getFile();
 		}
 		
-//		JFileChooser chooser = new JFileChooser();
-//	    FileNameExtensionFilter filter = new FileNameExtensionFilter(
-//	        "arff files", "arff", "ARFF");
-//	    chooser.setFileFilter(filter);
-//	    int returnVal = chooser.showOpenDialog(null);
-//	    if(returnVal != JFileChooser.APPROVE_OPTION) {
-//	    	displayExitOption();
-//	    	return getFile();
-//	    }
 	    return getFile("Select a training file","arff files","arff", "ARFF");
 	}
 	private static File getFile(String dialogTitle,String filetypeNames, String... extentions){
@@ -117,7 +104,6 @@ public class Tester {
 				printToStream(fos, tree.toString());
 				fos.close();
 			} catch (IOException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 		}else{

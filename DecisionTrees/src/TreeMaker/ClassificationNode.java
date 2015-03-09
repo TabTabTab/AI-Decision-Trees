@@ -5,19 +5,14 @@ public class ClassificationNode extends Node {
 	public ClassificationNode(String name){
 		super(name);
 	}
-	protected String toString(int nbrOfTabs){
-		String tabs="";
-		for(int i=0;i<nbrOfTabs;i++){
-			tabs+=" ";
+	protected String toString(int nbrOfSpaces){
+		String spaces="";
+		for(int i=0;i<nbrOfSpaces;i++){
+			spaces+=" ";
 		}
-//		for(int i=0;i<nbrOfTabs;i++){
-//			tabs+="|";
-//		}
-		//tabs+=" ";
-		String stringTree =tabs + name +"\n";
-//		for(String edge:neighbours.keySet()){
-//			stringTree+=neighbours.get(edge).toString(nbrOfTabs+1);
-//		}
+
+		String stringTree = spaces + name +System.lineSeparator();
+
 		return stringTree;
 	}
 }

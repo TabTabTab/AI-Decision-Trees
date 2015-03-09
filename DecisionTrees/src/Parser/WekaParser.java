@@ -17,7 +17,7 @@ public class WekaParser {
 		Scanner scanner=new Scanner(file);
 		
 		Pattern relationPattern=Pattern.compile("@RELATION (.*)",Pattern.CASE_INSENSITIVE);
-		//get the relationsnip text and throw it away
+		//get the relationship text and throw it away
 		String relationName="undefined";
 		while(scanner.hasNextLine()){
 			String line=scanner.nextLine();
@@ -42,8 +42,6 @@ public class WekaParser {
 		Pattern pattern = Pattern.compile("@ATTRIBUTE(.*)\\{(.*)\\}",Pattern.CASE_INSENSITIVE);
 		while(scanner.hasNext(attributePattern)){
 			String attributeLine=scanner.nextLine();
-			//System.out.println(attributeLine);
-			//System.out.println(pattern);
 			Matcher matcher = pattern.matcher(attributeLine);
 			if(matcher.find()){
 				String attributeName=matcher.group(1).trim();

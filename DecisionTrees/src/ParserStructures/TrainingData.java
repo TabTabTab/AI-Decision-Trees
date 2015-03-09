@@ -33,6 +33,7 @@ public class TrainingData {
 		this.examples.add(newExample);
 	}
 	public ArrayList<Attribute> getAllAttributes(){
+		@SuppressWarnings("unchecked")
 		ArrayList<Attribute> clone = (ArrayList<Attribute>)attributes.clone();
 		return clone;
 	}

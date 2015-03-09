@@ -13,8 +13,7 @@ public class Example {
 		return values;
 	}
 	public boolean hasValue(Value v){
-		boolean hasValue=values.indexOf(v)!=-1;
-		return hasValue;
+		return values.indexOf(v)!=-1;
 	}
 	public void setClassifier(Attribute classifier){
 		for(Value v:values){

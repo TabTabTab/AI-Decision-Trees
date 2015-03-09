@@ -15,15 +15,15 @@ public class Node {
 	public void addNeighbour(String edgeValue, Node node){
 		neighbours.put(edgeValue,node);
 	}
-	protected String toString(int nbrOfTabs){
-		String tabs="";
-		for(int i=0;i<nbrOfTabs;i++){
-			tabs+=" ";
+	protected String toString(int nbrOfSpaces){
+		String spaces="";
+		for(int i=0;i<nbrOfSpaces;i++){
+			spaces+=" ";
 		}
-		String stringTree ="\n";
+		String stringTree =System.lineSeparator();
 		for(String edge:neighbours.keySet()){
-			stringTree+=tabs+name +" = "+edge+" : ";
-			stringTree+=neighbours.get(edge).toString(nbrOfTabs+1);
+			stringTree+=spaces+name +" = "+edge+" : ";
+			stringTree+=neighbours.get(edge).toString(nbrOfSpaces+1);
 		}
 		stringTree+="\n";
 		return stringTree;

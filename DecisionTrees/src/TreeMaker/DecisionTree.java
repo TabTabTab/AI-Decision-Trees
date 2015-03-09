@@ -14,9 +14,9 @@ public class DecisionTree {
 	
 	public String toString(){
 		String treeString="";
-		treeString="||||| RelationShipName: "+relationshipName+" |||||\n";	
-		treeString+="    classifier: "+classsifier.getName() + "\n";
-		treeString+="    possible classificatiovalues: "+classsifier.getPossibleStringValues() + "\n";
+		treeString="||||| RelationShipName: "+relationshipName+" |||||"+System.lineSeparator();	
+		treeString+="    classifier: "+classsifier.getName() +System.lineSeparator();
+		treeString+="    possible classificatiovalues: "+classsifier.getPossibleStringValues() +System.lineSeparator();
 		return treeString+head.toString(0);
 	}
 	
